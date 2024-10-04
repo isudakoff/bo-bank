@@ -29,4 +29,11 @@ class UserController extends Controller
     {
         return view('users.create');
     }
+
+    public function update(UserData $userData, User $user): JsonResource
+    {
+        $user->update($userData->toArray());
+
+        return UserResource::make($user->fresh());
+    }
 }
