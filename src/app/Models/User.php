@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\Balance\Contracts\Balance;
+use App\Services\Balance\HasBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,10 +14,13 @@ use Illuminate\Notifications\Notifiable;
  * @property string email
  * @property string name
  * @property int age
+ * @property int balance
  */
-class User extends Authenticatable
+class User extends Authenticatable implements Balance
 {
-    use HasFactory, Notifiable;
+    use HasBalance;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
