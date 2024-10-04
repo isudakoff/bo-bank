@@ -1,6 +1,6 @@
 <?php
 
-namespace Balance\Exceptions;
+namespace App\Services\Balance\Exceptions;
 
 use Exception;
 

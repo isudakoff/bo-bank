@@ -2,15 +2,15 @@
 
 namespace App\Services\Balance;
 
-use Balance\Exceptions\InsufficientFundException;
-use Balance\Exceptions\InvalidAmountException;
+use App\Services\Balance\Exceptions\InsufficientFundException;
+use App\Services\Balance\Exceptions\InvalidAmountException;
 
 trait HasBalance
 {
     /**
      * @throws InvalidAmountException
      */
-    public function deposit(int $amount): int
+    public function deposit(string $amount): string
     {
         $this->throwExceptionIfAmountIsInvalid($amount);
 
@@ -23,7 +23,7 @@ trait HasBalance
      * @throws InsufficientFundException
      * @throws InvalidAmountException
      */
-    public function withdraw(int $amount): int
+    public function withdraw(string $amount): string
     {
         $this->throwExceptionIfAmountIsInvalid($amount);
 
@@ -37,7 +37,7 @@ trait HasBalance
     /**
      * @throws InvalidAmountException
      */
-    public function canWithdraw(int $amount): bool
+    public function canWithdraw(string $amount): bool
     {
         $this->throwExceptionIfAmountIsInvalid($amount);
 
@@ -49,7 +49,7 @@ trait HasBalance
     /**
      * @throws InvalidAmountException
      */
-    public function throwExceptionIfAmountIsInvalid(int $amount): void
+    public function throwExceptionIfAmountIsInvalid(string $amount): void
     {
         if ($amount <= 0) {
             throw new InvalidAmountException();
@@ -60,7 +60,7 @@ trait HasBalance
      * @throws InsufficientFundException
      * @throws InvalidAmountException
      */
-    public function throwExceptionIfFundIsInsufficient(int $amount): void
+    public function throwExceptionIfFundIsInsufficient(string $amount): void
     {
         if (!$this->canWithdraw($amount)) {
             throw new InsufficientFundException();

@@ -10,18 +10,18 @@ class BalanceController extends Controller
     public function show(Request $request, User $user)
     {
         return response()->json([
-            'balance' => $user->balance,
+            'balance' => number_format($user->balance, 0, '', ''),
         ]);
     }
 
     public function deposit(Request $request, User $user)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:1',
+            'amount' => 'required|integer|min:1',
         ]);
 
         return response()->json([
-            'balance' => $user->deposit($request->input('amount')),
+            'balance' => number_format($user->deposit($request->input('amount')), 0, '', ''),
         ]);
     }
 }

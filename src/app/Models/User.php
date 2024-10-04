@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string email
  * @property string name
  * @property int age
- * @property int balance
+ * @property string balance
  */
 class User extends Authenticatable implements Balance
 {
