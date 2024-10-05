@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\UserData;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
     public function store(): JsonResource
     {
-        $userData = UserData::from([
+        $password = Str::password(length: 8, symbols: false);
+        //logs()->debug('password: ' . $password);
+        $user = User::create([
             'email' => fake()->email(),
             'name' => fake()->name(),
             'age' => fake()->numberBetween(0, 150),
+            'password' => $password,
         ]);
-        $password = Str::password(length: 8, symbols: false);
-        //logs()->debug('password: ' . $password);
-        $user = User::create($userData->toArray() + compact('password'));
 
         return UserResource::make($user);
     }
@@ -30,9 +31,21 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function update(UserData $userData, User $user): JsonResource
+    public function update(Request $request, User $user): JsonResource
     {
-        $user->update($userData->toArray());
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => [
+                'sometimes',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user),
+            ],
+            'age' => 'sometimes|integer|between:0,150',
+        ]);
+
+        $user->update($data);
 
         return UserResource::make($user->fresh());
     }
