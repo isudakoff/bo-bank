@@ -10,5 +10,5 @@ Route::get('/', function () {
 Route::resources([
     'users' => UserController::class,
 ], [
-    'except' => ['update', 'destroy'],
+    'only' => ['create', 'store'],
 ]);
